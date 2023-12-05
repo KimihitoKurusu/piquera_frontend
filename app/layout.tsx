@@ -1,27 +1,51 @@
+"use client"
 import "@/styles/globals.css";
-import { Metadata } from "next";
-import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
-import { Providers } from "./providers";
-import { Navbar } from "@/components/navbar";
-import { Link } from "@nextui-org/link";
+import {fontSans} from "@/config/fonts";
+import {Providers} from "./providers";
+import {Navbar} from "@/components/navbar";
+import {Link} from "@nextui-org/link";
 import clsx from "clsx";
+import {Card, Col, Flex, Layout, Row} from 'antd';
+import React from "react";
+import CustomSider from "@/components/Sider/Sider";
+import Sider from "antd/es/layout/Sider";
+import {Content, Header} from "antd/es/layout/layout";
 
-export const metadata: Metadata = {
-	title: {
-		default: siteConfig.name,
-		template: `%s - ${siteConfig.name}`,
-	},
-	description: siteConfig.description,
-	themeColor: [
-		{ media: "(prefers-color-scheme: light)", color: "white" },
-		{ media: "(prefers-color-scheme: dark)", color: "black" },
-	],
-	icons: {
-		icon: "/favicon.ico",
-		shortcut: "/favicon-16x16.png",
-		apple: "/apple-touch-icon.png",
-	},
+
+const headerStyle: React.CSSProperties = {
+	textAlign: 'center',
+	color: '#fff',
+	height: 64,
+	paddingInline: 50,
+	lineHeight: '64px',
+	backgroundColor: '#7dbcea',
+};
+
+const contentStyle: React.CSSProperties = {
+	textAlign: 'center',
+	minHeight: 120,
+	lineHeight: '120px',
+	color: '#fff',
+	backgroundColor: '#108ee9',
+};
+
+const siderStyle: React.CSSProperties = {
+	textAlign: 'center',
+	lineHeight: '120px',
+	color: '#fff',
+	backgroundColor: '#3ba0e9',
+};
+
+const footerStyle: React.CSSProperties = {
+	textAlign: 'center',
+	color: '#fff',
+	backgroundColor: '#7dbcea',
+};
+const boxStyle: React.CSSProperties = {
+    width: '100%',
+    height: "100%",
+    borderRadius: 6,
+	padding: '0 4rem 0 4rem'
 };
 
 export default function RootLayout({
@@ -41,8 +65,8 @@ export default function RootLayout({
 				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
 					<div className="relative flex flex-col h-screen">
 						<Navbar />
-						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-							{children}
+						<main style={{width: "100%"}} className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+							<Card>{children}</Card>
 						</main>
 						<footer className="w-full flex items-center justify-center py-3">
 							<Link
