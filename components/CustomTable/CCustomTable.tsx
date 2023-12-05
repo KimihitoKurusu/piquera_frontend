@@ -36,7 +36,7 @@ const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 
 type User = typeof users[0];
 
-const App = () => {
+export default function App() {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -299,7 +299,7 @@ const App = () => {
         wrapper: "max-h-[382px]",
       }}
       selectedKeys={selectedKeys}
-      //selectionMode="multiple"
+      selectionMode="multiple"
       sortDescriptor={sortDescriptor}
       topContent={topContent}
       topContentPlacement="outside"
@@ -327,5 +327,3 @@ const App = () => {
     </Table>
   );
 }
-
-export default App
