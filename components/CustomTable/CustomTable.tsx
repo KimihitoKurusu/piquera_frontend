@@ -15,8 +15,6 @@ import {
 import { Tooltip } from "@nextui-org/react";
 import { EditIcon } from "./EditIcon";
 import { DeleteIcon } from "./DeleteIcon";
-import { EyeIcon } from "./EyeIcon";
-
 interface CustomTableProps {
 	rows: any[] | null;
 	columns: { key: string; label: string }[];
@@ -32,9 +30,9 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 const CustomTable: React.FC<CustomTableProps> = (props) => {
 	const { rows, columns, itemsPerPage = 10 } = props;
 	const [page, setPage] = useState(1);
-	const [filterValue, setFilterValue] = React.useState("");
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
-	const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
+	const [filterValue] = React.useState("");
+	const [rowsPerPage] = React.useState(10);
+	const [statusFilter] = React.useState<Selection>("all");
 
 	const hasSearchFilter = Boolean(filterValue);
 
@@ -78,7 +76,6 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 	const bottomContent = React.useMemo(() => {
 		return (
 			<div className="py-2 px-2 flex justify-between items-center">
-
 				<Pagination
 					isCompact
 					showControls
@@ -89,10 +86,18 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 					onChange={setPage}
 				/>
 				<div className="hidden sm:flex w-[30%] justify-end gap-2">
-					<Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
+					<Button
+						isDisabled={pages === 1}
+						size="sm"
+						variant="flat"
+						onPress={onPreviousPage}>
 						Previous
 					</Button>
-					<Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
+					<Button
+						isDisabled={pages === 1}
+						size="sm"
+						variant="flat"
+						onPress={onNextPage}>
 						Next
 					</Button>
 				</div>
@@ -104,14 +109,14 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 			<Table
 				aria-label="Rows actions table example with dynamic content"
 				bottomContent={bottomContent}
-				onRowAction={(key: any) => alert(`Opening item ${key}...`)}
-			>
+				onRowAction={(key: any) => alert(`Opening item ${key}...`)}>
 				<TableHeader columns={columns}>
 					{columns.map((column: { key: any; label: any }) => (
 						<TableColumn
 							key={column.key}
-							align={column.key === "actions" ? "center" : "start"}
-						>
+							align={
+								column.key === "actions" ? "center" : "start"
+							}>
 							{column.label}
 						</TableColumn>
 					))}
@@ -125,20 +130,17 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 										getKeyValue(item, column.key)
 									) : (
 										<div className="relative flex items-center gap-2">
-											<Tooltip content="Details">
-                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                          <EyeIcon />
-                        </span>
+											<Tooltip content="Editar">
+												<span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+													<EditIcon />
+												</span>
 											</Tooltip>
-											<Tooltip content="Edit user">
-                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                          <EditIcon />
-                        </span>
-											</Tooltip>
-											<Tooltip color="danger" content="Delete user">
-                        <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                          <DeleteIcon />
-                        </span>
+											<Tooltip
+												color="danger"
+												content="Cancelar">
+												<span className="text-lg text-danger cursor-pointer active:opacity-50">
+													<DeleteIcon />
+												</span>
 											</Tooltip>
 										</div>
 									)}

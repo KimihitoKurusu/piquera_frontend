@@ -1,10 +1,9 @@
 "use client"
 import { title } from "@/components/primitives";
 import CustomTable from "@/components/CustomTable/CustomTable";
-import App from "@/components/CustomTable/CCustomTable";
 import { useEffect, useState } from "react";
 import axiosApi from '@/config/axios';
-import { Roboto_Flex } from "next/font/google";
+//import { Roboto_Flex } from "next/font/google";
 export default function MarcaPage() {
 
     const [marcaData, setMarcaData] = useState(null)
@@ -13,7 +12,6 @@ export default function MarcaPage() {
         if (!marcaData) {
             axiosApi.get('piquera/marca/').then(({data}) => {
                 setMarcaData(data)
-                console.log(data)
             })
         }
     })
@@ -38,10 +36,7 @@ export default function MarcaPage() {
 
 	return (
         <div>
-            <div>
                 <CustomTable rows={marcaData} columns={cols}/>
-            </div>
-
         </div>
 	);
 }
