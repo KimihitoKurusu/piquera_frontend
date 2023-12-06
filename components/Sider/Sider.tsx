@@ -1,7 +1,7 @@
 import React from 'react';
-import { MailOutlined, SettingOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Menu } from 'antd';
+import {MailOutlined, SettingOutlined} from '@ant-design/icons';
+import type {MenuProps} from 'antd';
+import {Menu} from 'antd';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -53,7 +53,6 @@ const CustomSider: React.FC = () => {
     return (
         <Menu
             onClick={onClick}
-            // style={{ width: 256 }}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"

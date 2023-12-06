@@ -1,119 +1,60 @@
 "use client"
-import { title } from "@/components/primitives";
-import CustomTable from "@/components/CustomTable/CustomTable";
-import { useEffect, useState } from "react";
-import axiosApi from '@/config/axios';
-//import { Roboto_Flex } from "next/font/google";
-export default function MarcaPage() {
+import {CustomTable} from "@/components/"
+import React, {useEffect, useState} from "react"
+import axiosApi from '@/config/axios'
+import {marcaColumns} from "@/feature";
+import {Modal} from "antd";
+import MarcaForm from "@/components/MarcaForm/MarcaForm";
+import {Toaster} from "react-hot-toast";
 
+export default function MarcaPage() {
     const [marcaData, setMarcaData] = useState(null)
+    const [isModalVisible, setIsModalVisible] = useState(false)
+    const [modalTitle, setModalTitle] = useState('Insertar')
+    const [editItem, setEditItem] = useState(null);
+
+    const getAllMarcaData = () => {
+        axiosApi.get('piquera/marca/').then(({data}) => {
+            setMarcaData(data)
+        })
+    }
 
     useEffect(() => {
         if (!marcaData) {
-            axiosApi.get('piquera/marca/').then(({data}) => {
-                setMarcaData(data)
-            })
+            getAllMarcaData()
         }
     })
-    const cols = [
-        {
-            key: "nombre",
-            label: "Nombre",
-        },
-        {
-            key: "tiempo_km",
-            label: "Tiempo por KM",
-        },
-        {
-            key: "precio_km",
-            label: "Precio por KM",
-        },
-        {
-            key: "actions",
-            label: "Acciones",
-        },
-    ];
 
 	return (
-        <div>
-                <CustomTable rows={marcaData} columns={cols}/>
-        </div>
-	);
+        <>
+            <Toaster toastOptions={{
+                className: '',
+                style: {
+                    border: '1px solid #713200',
+                    padding: '16px',
+                    color: '#713200',
+                },
+            }}
+            />
+            <CustomTable
+                rows={marcaData}
+                columns={marcaColumns}
+                setIsModalVisible={setIsModalVisible}
+                setModalTitle={setModalTitle}
+                setEditItem={setEditItem}
+                getAllMarcaData={getAllMarcaData}
+            />
+            <Modal
+                title={modalTitle}
+                width={600}
+                centered
+                open={isModalVisible}
+                onCancel={() => setIsModalVisible(false)}
+                footer={null}
+                destroyOnClose
+            >
+               <MarcaForm setIsModalVisible={setIsModalVisible} editItem={editItem} getAllMarcaData={getAllMarcaData}/>
+            </Modal>
+        </>
+    )
 }
-/**
- * "use client"
- * import { title } from "@/components/primitives";
- * import CustomTable from "@/components/CustomTable/CustomTable";
- * import App from "@/components/CustomTable/CCustomTable";
- * import { useEffect, useState } from "react";
- * import axiosApi from '@/config/axios';
- * import { Roboto_Flex } from "next/font/google";
- * export default function MarcaPage() {
- *
- *     const [marcaData, setMarcaData] = useState(null)
- *     useEffect(() => {
- *         if (!marcaData) {
- *             axiosApi.get('piquera/marca/').then(({data}) => {
- *                 setMarcaData(data)
- *             })
- *         }
- *     })
- *     const cols = [
- *         // {
- *         //   key: "id",
- *         //   label: "ID",
- *         // },
- *         {
- *             key: "nombre",
- *             label: "Nombre",
- *             dataIndex: "nombre",
- *         },
- *         {
- *             key: "tiempo_km",
- *             label: "Tiempo por KM",
- *             dataIndex: "tiempo_km",
- *         },
- *         {
- *             key: "precio_km",
- *             label: "Precio por KM",
- *             dataIndex: "precio_km",
- *         },
- *         {
- *             key: "precio_km_2",
- *             label: "Precio por KM 2",
- *             dataIndex: "precio_km_2",
- *         },
- *         {
- *             key: "precio_km_3",
- *             label: "Precio por KM 3",
- *             dataIndex: "precio_km_3",
- *         },
- *         {
- *             key: "precio_km_4",
- *             label: "Precio por KM 4",
- *             dataIndex: "precio_km_4",
- *         },
- *         {
- *             key: "precio_km_5",
- *             label: "Precio por KM 5",
- *             dataIndex: "precio_km_5",
- *         },
- *         {
- *             key: "precio_km_6",
- *             label: "Precio por KM 6",
- *             dataIndex: "precio_km_6",
- *         },
- *     ];
- *     const antdColumns: ColumnsType<YourDataType> = cols.map(col => ({
- *         title: col.label,
- *         dataIndex: col.dataIndex,
- *         // You can add other properties like sorter, filters, etc. if needed
- *     }));
- *
- *     return (
- *         <>
- *             <CustomTable rows={marcaData} columns={antdColumns}/>
- *         </>
- *     );
- * }
- */
