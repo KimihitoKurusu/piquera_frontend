@@ -5,6 +5,9 @@ import CustomDatePicker from "@/components/base/CustomDatePicker/CustomDatePicke
 import CustomInputNumber from "@/components/base/CustomInputNumber/CustomInputNumber"
 import CustomInputDecimal from "@/components/base/CustomInputDecimal/CustomInputDecimal"
 import CustomConfirmModal from "@/components/base/CustomConfirmModal/CustomConfirmModal"
+import ClienteForm from "./ClienteForm/ClienteForm"
+import MarcaForm from "./MarcaForm/MarcaForm"
+import CustomCheckBox from "./base/CustomCheckBox/CustomCheckBox"
 
 export {
     CustomSider,
@@ -13,5 +16,8 @@ export {
     CustomDatePicker,
     CustomInputNumber,
     CustomInputDecimal,
-    CustomConfirmModal
+    CustomConfirmModal,
+    ClienteForm,
+    MarcaForm,
+    CustomCheckBox
 }

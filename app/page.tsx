@@ -23,11 +23,28 @@ export default function Home() {
 
 			<div className="flex gap-3">
 				<Link
-					isExternal
-					href='./Marca'
+					href='./marca'
 					className={buttonStyles({ color: "primary", radius: "full", variant: "shadow" })}
 				>
 					Marca
+				</Link>
+				<Link
+					href='./taxi'
+					className={buttonStyles({ color: "primary", radius: "full", variant: "shadow" })}
+				>
+					Taxi
+				</Link>
+				<Link
+					href='./cliente'
+					className={buttonStyles({ color: "primary", radius: "full", variant: "shadow" })}
+				>
+					Cliente
+				</Link>
+				<Link
+					href='./sviaje'
+					className={buttonStyles({ color: "primary", radius: "full", variant: "shadow" })}
+				>
+					Solicitud de Viaje
 				</Link>
 			</div>
 

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Button, Col, Form, Row, Typography} from 'antd';
-import {CustomInputDecimal, CustomInputNumber, CustomTextInput} from "@/components";
+import {CustomCheckBox, CustomInputDecimal, CustomInputNumber, CustomTextInput} from "@/components";
 import toast, { Toaster } from 'react-hot-toast';
 import axiosApi from "@/config/axios";
 import {fontMono} from "@/config/fonts";
@@ -13,12 +13,11 @@ const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
 }
 
-const MarcaForm: React.FC = ({setIsModalVisible, editItem, getAllMarcaData}) => {
+const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData}) => {
     const [form] = Form.useForm()
     const initialsFormData = {
         ['nombre']: editItem?.nombre || '',
-        ['tiempoKm']: editItem?.tiempo_km || 0,
-        ['precioKm']: editItem?.precio_km || 0,
+        ['contPer']: editItem?.contPer || false,
     }
     useEffect(() => {
         form.setFieldsValue(initialsFormData)
@@ -32,9 +31,9 @@ const MarcaForm: React.FC = ({setIsModalVisible, editItem, getAllMarcaData}) => 
         };
         if (!editItem){
             try {
-                const resp = await axiosApi.post('piquera/marca/', formData);
+                const resp = await axiosApi.post('piquera/cliente/', formData);
                 if (resp.status === 201){
-                    toast.success('Marca Creada Sactifactoriamente!', {position: 'top-right',});
+                    toast.success('CLiente Registrado Sactifactoriamente!', {position: 'top-right',});
                     form.setFieldsValue(initialsFormData)
                     setIsModalVisible(false)
                 }
@@ -44,9 +43,9 @@ const MarcaForm: React.FC = ({setIsModalVisible, editItem, getAllMarcaData}) => 
             }
         }else {
             try {
-                const resp = await axiosApi.put(`piquera/marca/${editItem.id}/`, formData);
+                const resp = await axiosApi.put(`piquera/cliente/${editItem.id}/`, formData);
                 if (resp.status === 200){
-                    toast.success('Marca Modificada Sactifactoriamente!', {position: 'top-right',});
+                    toast.success('CLiente Editado Sactifactoriamente!', {position: 'top-right',});
                     form.setFieldsValue(initialsFormData)
                     setIsModalVisible(false)
                 }
@@ -56,7 +55,7 @@ const MarcaForm: React.FC = ({setIsModalVisible, editItem, getAllMarcaData}) => 
                 toast.error('Upss, algo ha fallado!',{position: 'top-right',});
             }
         }
-        getAllMarcaData()
+        getAllClienteData()
     };
     return <Form
         name="basic"
@@ -74,22 +73,11 @@ const MarcaForm: React.FC = ({setIsModalVisible, editItem, getAllMarcaData}) => 
                 <Title level={5}>Nombre: </Title>
                 <CustomTextInput
                     name={'nombre'}
-                    placeholder={'Nombre de la Marca'}
+                    placeholder={'Nombre del Cliente'}
                     required
                 />
-                <Title level={5}>Tiempo por km (segundos): </Title>
-                <CustomInputNumber
-                    name={'tiempoKm'}
-                    placeholder={'Tiempo por km (segundos)'}
-                    required
-                />
-                <Title level={5}>Precio por km: </Title>
-                <CustomInputDecimal
-                    name={'precioKm'}
-                    placeholder={'Precio por km'}
-                    required
-                    hasCurrency
-                />
+                <Title level={5}>Tiene Contrato Permanente?</Title>
+                <CustomCheckBox />
             </Col>
         </Row>
         <Row>
@@ -110,4 +98,4 @@ const MarcaForm: React.FC = ({setIsModalVisible, editItem, getAllMarcaData}) => 
     </Form>
 };
 
-export default MarcaForm;
+export default ClienteForm;

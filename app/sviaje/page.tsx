@@ -1,26 +1,26 @@
 "use client"
-import {CustomTable, MarcaForm} from "@/components/"
+import {CustomTable, ClienteForm} from "@/components/"
 import React, {useEffect, useState} from "react"
 import axiosApi from '@/config/axios'
-import {marcaColumns} from "@/feature";
+import {sViajeColumns} from "@/feature";
 import {Modal} from "antd";
 import {Toaster} from "react-hot-toast";
 
-export default function MarcaPage() {
-    const [marcaData, setMarcaData] = useState(null)
+export default function SViajePage() {
+    const [sViajeData, setSViajeData] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [modalTitle, setModalTitle] = useState('Insertar')
     const [editItem, setEditItem] = useState(null);
 
-    const getAllMarcaData = () => {
-        axiosApi.get('piquera/marca/').then(({data}) => {
-            setMarcaData(data)
+    const getAllSViajeData = () => {
+        axiosApi.get('piquera/sviaje/').then(({data}) => {
+            setSViajeData(data)
         })
     }
 
     useEffect(() => {
-        if (!marcaData) {
-            getAllMarcaData()
+        if (!sViajeData) {
+            getAllSViajeData()
         }
     })
 
@@ -36,13 +36,13 @@ export default function MarcaPage() {
             }}
             />
             <CustomTable
-                rows={marcaData}
-                columns={marcaColumns}
+                rows={sViajeData}
+                columns={sViajeColumns}
                 setIsModalVisible={setIsModalVisible}
                 setModalTitle={setModalTitle}
                 setEditItem={setEditItem}
-                getAllData={getAllMarcaData}
-                type='marca'
+                getAllData={getAllSViajeData}
+                type='sviaje'
             />
             <Modal
                 title={modalTitle}
@@ -53,7 +53,7 @@ export default function MarcaPage() {
                 footer={null}
                 destroyOnClose
             >
-               <MarcaForm setIsModalVisible={setIsModalVisible} editItem={editItem} getAllMarcaData={getAllMarcaData}/>
+               <ClienteForm setIsModalVisible={setIsModalVisible} editItem={editItem} getAllClienteData={getAllSViajeData}/>
             </Modal>
         </>
     )

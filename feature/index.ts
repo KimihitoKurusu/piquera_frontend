@@ -1,3 +1,6 @@
-import {marcaColumns} from "@/feature/marca/columns"
+import { marcaColumns } from "@/feature/marca/columns";
+import { clienteColumns } from "./cliente/columns";
+import { taxiColumns } from "./taxi/columns";
+import { sViajeColumns } from "./sViaje/columns";
 
-export { marcaColumns }
+export { marcaColumns, clienteColumns, taxiColumns, sViajeColumns };

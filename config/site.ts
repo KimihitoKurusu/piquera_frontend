@@ -14,6 +14,18 @@ export const siteConfig = {
 			href: "/marca",
 		},
 		{
+			label: "Taxi",
+			href: "/taxi",
+		},
+		{
+			label: "Cliente",
+			href: "/cliente",
+		},
+		{
+			label: "Solicitud de Viaje",
+			href: "/sviaje",
+		},
+		{
 			label: "About",
 			href: "/about",
 		},
@@ -26,6 +38,18 @@ export const siteConfig = {
 		{
 			label: "Marca",
 			href: "/marca",
+		},
+		{
+			label: "Taxi",
+			href: "/taxi",
+		},
+		{
+			label: "Cliente",
+			href: "/cliente",
+		},
+		{
+			label: "Solicitud de Viaje",
+			href: "/sviaje",
 		},
 		{
 			label: "About",

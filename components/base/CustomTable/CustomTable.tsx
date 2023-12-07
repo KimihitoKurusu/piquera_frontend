@@ -33,11 +33,12 @@ interface CustomTableProps {
 	setIsModalVisible: (value: boolean) => void
 	setModalTitle: (value: string) => void
 	setEditItem: (value: any) => void
-	getAllMarcaData: () => void
+	getAllData: () => void
+	type: string
 }
 
 const CustomTable: React.FC<CustomTableProps> = (props) => {
-	const {rows, columns, itemsPerPage = 10, setIsModalVisible, setModalTitle, setEditItem, getAllMarcaData} = props
+	const {rows, columns, itemsPerPage = 10, setIsModalVisible, setModalTitle, setEditItem, getAllData, type} = props
 	const [page, setPage] = useState(1)
 	const [filterValue, setFilterValue] = React.useState("")
 	const [rowsPerPage] = React.useState(10)
@@ -49,10 +50,10 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 			icon: <ExclamationCircleFilled/>,
 			okType: 'danger',
 			onOk() {
-				axiosApi.delete(`/piquera/marca/${id}/`).then((resp) => {
+				axiosApi.delete(`/piquera/${type}/${id}/`).then((resp) => {
 					if (resp.status === 204) {
-						toast.success('Marca Eliminada Sactifactoriamente!', {position: 'top-right',})
-						getAllMarcaData()
+						toast.success('Elemento Eliminado Sactifactoriamente!', {position: 'top-right',})
+						getAllData()
 					}
 				}).catch((error)=>{
 					console.error('Error:', error.response.data);
@@ -136,6 +137,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 								onClick={() => {
 									setEditItem(null)
 									setIsModalVisible(true)
+									getAllData()
 								}}
 								endContent={<PlusIcon/>}>
 							Insertar
