@@ -65,17 +65,16 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 		});
 	};
 
-
 	const hasSearchFilter = Boolean(filterValue)
 
 	const filteredItems = React.useMemo(() => {
 		let filtered = [...(rows || [])]
-
 		if (hasSearchFilter) {
 			filtered = filtered.filter(
-				(user) =>
-					user.name &&
-					user.name.toLowerCase().includes(filterValue.toLowerCase())
+				(item) =>{
+				 	return item.nombre &&
+						item.nombre.toLowerCase().includes(filterValue.toLowerCase())
+				}
 			)
 		}
 		return filtered
