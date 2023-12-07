@@ -239,7 +239,6 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 					))}
 				</TableBody>
 			</Table>
-			<CustomConfirmModal/>
 		</div>
 	)
 
