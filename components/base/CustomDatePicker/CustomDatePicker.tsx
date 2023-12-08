@@ -1,11 +1,11 @@
 import React from 'react'
 import moment from 'moment'
-import es from 'antd/lib/locale/es_ES'
-import { useRouter } from 'next/router'
 import type { Rule } from 'antd/lib/form'
-import styles from './CustomDatePicker.module.scss'
 import { ConfigProvider, DatePicker, DatePickerProps, Form } from 'antd'
-
+import {RangePickerProps} from "antd/es/date-picker";
+import dayjs from "dayjs";
+import 'moment/locale/es';
+import locale from 'antd/lib/locale/es_ES';
 type CustomDatePickerProps = DatePickerProps & {
   required?: boolean,
   name: string,
@@ -16,6 +16,7 @@ type CustomDatePickerProps = DatePickerProps & {
   onChange?: (value: moment.Moment) => void
 }
 
+
 const CustomDatePicker: React.FC<CustomDatePickerProps> = (props) => {
   const {
     required = false,
@@ -24,32 +25,13 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = (props) => {
     onChange = null,
     otherRules = [],
     ...restProps
-  } = props
+  } = props;
 
-
-  const handleChange = (v: moment.Moment) => {
-    if (onChange) {
-      onChange(v)
-    }
-  }
   return (
-    <>
-      <ConfigProvider locale={es}>
-        <Form.Item
-          name={name}
-          rules={[{ required, message: 'Este campo es requerido' }, ...otherRules]}
-        >
-          <DatePicker
-            size='large'
-            className={styles['custom-date-picker']}
-            placeholder={placeholder}
-            onChange={handleChange}
-            {...restProps}
-          />
-        </Form.Item >
-      </ConfigProvider>
-    </>
-  )
-}
+      <>
 
-export default CustomDatePicker
+      </>
+  );
+};
+
+export default CustomDatePicker;

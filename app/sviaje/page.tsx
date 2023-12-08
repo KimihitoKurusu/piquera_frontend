@@ -5,6 +5,7 @@ import axiosApi from '@/config/axios'
 import {sViajeColumns} from "@/feature";
 import {Modal} from "antd";
 import {Toaster} from "react-hot-toast";
+import SViajeForm from "@/components/SViajeForm/SViajeForm";
 
 export default function SViajePage() {
     const [sViajeData, setSViajeData] = useState(null)
@@ -54,7 +55,7 @@ export default function SViajePage() {
                 footer={null}
                 destroyOnClose
             >
-               <ClienteForm setIsModalVisible={setIsModalVisible} editItem={editItem} getAllClienteData={getAllSViajeData}/>
+               <SViajeForm setIsModalVisible={setIsModalVisible} editItem={editItem} getAllSViajeData={getAllSViajeData}/>
             </Modal>
         </>
     )

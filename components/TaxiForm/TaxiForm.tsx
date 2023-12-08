@@ -6,7 +6,7 @@ import axiosApi from "@/config/axios";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/store/store";
 import {getAllMarcaData} from "@/redux/marca/actions";
-import {CloseOutlined, FlagOutlined, FlagTwoTone, ToolOutlined} from "@ant-design/icons";
+import {CloseOutlined, FlagTwoTone, ToolOutlined} from "@ant-design/icons";
 
 const {Title} = Typography;
 

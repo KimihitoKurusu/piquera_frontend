@@ -9,7 +9,8 @@ import {
 	TableCell,
 	TableColumn,
 	TableHeader,
-	TableRow, Tooltip,
+	TableRow,
+	Tooltip,
 } from "@nextui-org/react"
 import {PlusIcon} from "@/components/base/CustomTable/PlusIcon";
 import {SearchIcon} from "@/components/base/CustomTable/SearchIcon";
@@ -117,6 +118,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 	}, [allApiData])
 
 	const showConfirm = ({id}) => {
+		console.log('Pinga', id)
 		confirm({
 			title: 'Estas seguro de deseas eliminar este elemento?',
 			icon: <ExclamationCircleFilled/>,
@@ -167,15 +169,19 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 			}
 
 			if (hasClient && typeof item.cliente !== 'undefined') {
-				const clientInfo = allApiData?.cliente.find(({id}) => id === item.cliente);
-				newItem = {...newItem, cliente: clientInfo ? clientInfo.nombre : item.cliente};
+				const clienteEncontrado = allApiData?.cliente.find(({ id }) => id === item.cliente);
+				if (clienteEncontrado) {
+					const { id, nombre } = clienteEncontrado;
+					newItem = { ...newItem, cliente: `${id};${nombre}` };
+				}
 			}
+
 
 			if (hasRecogidaDate && hasReservaDate) {
 				newItem = {
 					...newItem,
-					recogida_date: moment(item.recogida_date).format('MM/DD/YYYY'),
-					reserva_date: moment(item.reserva_date).format('MM/DD/YYYY')
+					recogida_date: moment(item.recogida_date).format('MM/DD/YYYY hh:MM'),
+					reserva_date: moment(item.reserva_date).format('MM/DD/YYYY hh:MM')
 				};
 			}
 
@@ -313,28 +319,33 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 		return item[key];
 	};
 
+	const renderClienteCell = (item) => {
+		return item?.cliente.split(';')[1]
+	}
+
 	const renderBooleanCell = (flag: boolean)=> flag ?
 		<CheckCircleTwoTone twoToneColor="#52c41a" /> :
 		<CloseCircleTwoTone twoToneColor="#eb2f96"/>
 
 	const renderCellContent = (item, column) => {
-		const { key } = column;
+		const {key} = column;
 		const flag = item?.contPer || item?.completado
-		if (key !== "actions") {
-			if (['contPer', 'completado'].includes(key)){
-				return renderBooleanCell(flag !== 'No')
-			}
-			if (key === 'estado') {
-				return renderEstadoCell(item);
-			} else {
-				return !!item['marca_id'] ?
-					getKeyValue({ ...item, marca_id: item.marca_id.split(' ')[1] }, key) :
-					getKeyValue(item, key);
-			}
-		} else {
-			return renderActionsCell(item);
+		if (['contPer', 'completado'].includes(key)) {
+			return renderBooleanCell(flag !== 'No')
 		}
-	};
+		if (key === 'cliente') {
+			return renderClienteCell(item)
+		}
+		if (key === 'estado') {
+			return renderEstadoCell(item)
+		}
+		if (key === "actions") {
+			return renderActionsCell(item)
+		}
+		return !!item['marca_id'] ?
+			getKeyValue({...item, marca_id: item.marca_id.split(' ')[1]}, key) :
+			getKeyValue(item, key)
+	}
 
 	const renderEstadoCell = (item) => (
 		<Tooltip
@@ -344,7 +355,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 		>
 			{stateValues[item.estado]?.icon}
 		</Tooltip>
-	);
+	)
 
 	const renderActionsCell = (item) => (
 		<div className="relative flex items-center gap-2">
