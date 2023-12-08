@@ -16,7 +16,6 @@ export default function MarcaPage() {
     const [editItem, setEditItem] = useState(null);
 
     useEffect(() => {
-        console.log('Marca', marcaData)
         if (marcaData.length === 0 && !isLoading){
             dispatch(getAllMarcaData())
         }
@@ -41,6 +40,7 @@ export default function MarcaPage() {
                 setModalTitle={setModalTitle}
                 setEditItem={setEditItem}
                 type='marca'
+                filterKey='nombre'
             />
             <Modal
                 title={modalTitle}

@@ -17,7 +17,6 @@ import {EditIcon} from "./EditIcon"
 import {DeleteIcon} from "./DeleteIcon"
 import {PlusIcon} from "@/components/base/CustomTable/PlusIcon";
 import {SearchIcon} from "@/components/base/CustomTable/SearchIcon";
-import {CustomConfirmModal} from "@/components";
 import {ExclamationCircleFilled} from "@ant-design/icons";
 import {Modal} from 'antd';
 import axiosApi from "@/config/axios";
@@ -37,8 +36,9 @@ interface CustomTableProps {
 	setIsModalVisible: (value: boolean) => void
 	setModalTitle: (value: string) => void
 	setEditItem: (value: any) => void
-	getAllData: () => void
+	getAllData?: () => void
 	type: string
+	filterKey: string | string[]
 }
 
 const CustomTable: React.FC<CustomTableProps> = (props) => {
@@ -52,7 +52,9 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 		setModalTitle,
 		setEditItem,
 		type,
-		getAllData = () => {}
+		filterKey,
+		getAllData = () => {
+		}
 	} = props
 	const [page, setPage] = useState(1)
 	const [filterValue, setFilterValue] = React.useState("")
@@ -85,36 +87,36 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 	const hasSearchFilter = Boolean(filterValue)
 
 	const filteredItems = React.useMemo(() => {
-		let filtered = [...(rows || [])]
+		let filtered = [...(rows || [])];
 
-		if (hasSearchFilter) {
-			filtered = filtered.filter(
-				(item) =>{
-				 	return item.nombre &&
-						item.nombre.toLowerCase().includes(filterValue.toLowerCase())
-				}
-			)
-		}
-		const hasContPer = filtered.some((item) => typeof item.contPer !== 'undefined')
-		const hasMarcaId = filtered.some((item) => typeof item.marca_id !== 'undefined')
-		if(hasMarcaId){
-			filtered = filtered.map((item) => {
-				if (typeof item.marca_id !== 'undefined') {
-					return { ...item, marca_id: marcaData.find(({id}) => id === item.marca_id)?.nombre};
-				}
-				return item;
+		const hasContPer = filtered.some((item) => typeof item.contPer !== 'undefined');
+		const hasMarcaId = filtered.some((item) => typeof item.marca_id !== 'undefined');
+
+		filtered = filtered.map((item) => {
+			if (hasMarcaId && typeof item.marca_id !== 'undefined') {
+				return { ...item, marca_id: marcaData.find(({ id }) => id === item.marca_id)?.nombre };
+			}
+
+			if (hasContPer && typeof item.contPer !== 'undefined') {
+				return { ...item, contPer: item.contPer ? 'Sí' : 'No' };
+			}
+
+			return item;
+		});
+
+		if (hasSearchFilter && filterKey) {
+			filtered = filtered.filter((item) => {
+				const valuesToFilter = Array.isArray(filterKey)
+					? filterKey.map((key) => item[key])
+					: [item[filterKey]];
+				return valuesToFilter.some(
+					(value) => value ? value.toLowerCase().includes(filterValue.toLowerCase()) : false
+				);
 			});
 		}
-		if(hasContPer){
-			filtered = filtered.map((item) => {
-				if (typeof item.contPer !== 'undefined') {
-					return { ...item, contPer: item.contPer ? 'Sí' : 'No' };
-				}
-				return item;
-			});
-		}
-		return filtered
-	}, [rows, filterValue, statusFilter])
+
+		return filtered;
+	}, [rows, filterValue, statusFilter, filterKey]);
 
 	const pages = Math.ceil(filteredItems.length / rowsPerPage)
 
@@ -226,7 +228,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 				topContent={topContent}
 				bottomContent={bottomContent}
 				topContentPlacement="outside"
-				onRowAction={(key: any) => alert(`Opening item ${key}...`)}>
+				>
 				<TableHeader columns={columns}>
 					{columns.map((column: { key: any; label: any }) => (
 						<TableColumn

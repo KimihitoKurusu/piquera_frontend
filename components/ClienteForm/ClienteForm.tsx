@@ -29,7 +29,6 @@ const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData})
             nombre: values.nombre,
             contPer: values.contPer,
         };
-        console.log('formData', formData, editItem)
         if (!editItem){
             try {
                 const resp = await axiosApi.post('piquera/cliente/', formData);
@@ -51,9 +50,7 @@ const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData})
                     form.setFieldsValue(initialsFormData)
                     setIsModalVisible(false)
                 }
-                console.log('Success:', values, resp);
             } catch (error) {
-                console.error('Error:', error.response.data);
                 toast.error('Upss, algo ha fallado!',{position: 'top-right',});
             }
         }

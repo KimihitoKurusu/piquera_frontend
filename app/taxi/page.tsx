@@ -24,7 +24,6 @@ export default function TaxiPage() {
     }
 
     useEffect(() => {
-        console.log('Marca', marcaData)
         if (marcaData.length === 0 && !isLoading){
             dispatch(getAllMarcaData())
         }
@@ -32,7 +31,6 @@ export default function TaxiPage() {
     }, [dispatch, marcaData, isLoading])
 
     useEffect(() => {
-        console.log(taxiData)
         if (!taxiData) {
             getAllTaxiData()
         }
@@ -57,6 +55,7 @@ export default function TaxiPage() {
                 setEditItem={setEditItem}
                 getAllData={getAllTaxiData}
                 type='taxi'
+                filterKey={['chofer', 'marca_id']}
             />
             <Modal
                 title={modalTitle}

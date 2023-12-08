@@ -43,6 +43,7 @@ export default function ClientePage() {
                 setEditItem={setEditItem}
                 getAllData={getAllClienteData}
                 type='cliente'
+                filterKey='nombre'
             />
             <Modal
                 title={modalTitle}
