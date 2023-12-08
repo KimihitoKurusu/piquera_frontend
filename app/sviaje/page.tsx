@@ -43,6 +43,7 @@ export default function SViajePage() {
                 setEditItem={setEditItem}
                 getAllData={getAllSViajeData}
                 type='sviaje'
+                filterKey={['cliente', 'taxi', 'completado']}
             />
             <Modal
                 title={modalTitle}

@@ -8,8 +8,12 @@ const sViajeColumns = [
         label: "Taxi",
     },
     {
-        key: "recogidaDate",
+        key: "recogida_date",
         label: "Fecha de recogida",
+    },
+    {
+        key: "reserva_date",
+        label: "Fecha de reserva",
     },
     {
         key: "destino",

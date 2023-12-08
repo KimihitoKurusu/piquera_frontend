@@ -37,7 +37,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = (props) => {
         }
     }
 
-    const getRules = (): Rule[] => [{ required, message: 'This field is required', whitespace: true }]
+    const getRules = (): Rule[] => [{ required, message: 'Este campo es requerido', whitespace: true }]
 
     return (
         <Form.Item

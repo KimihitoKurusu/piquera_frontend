@@ -8,6 +8,7 @@ import {Toaster} from "react-hot-toast";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/store/store";
 import {getAllMarcaData} from "@/redux/marca/actions";
+import TaxiForm from "@/components/TaxiForm/TaxiForm";
 
 export default function TaxiPage() {
     const dispatch = useDispatch()
@@ -66,7 +67,7 @@ export default function TaxiPage() {
                 footer={null}
                 destroyOnClose
             >
-               <ClienteForm setIsModalVisible={setIsModalVisible} editItem={editItem} getAllClienteData={getAllTaxiData}/>
+               <TaxiForm setIsModalVisible={setIsModalVisible} editItem={editItem} getAllTaxiData={getAllTaxiData}/>
             </Modal>
         </>
     )

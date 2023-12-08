@@ -33,7 +33,7 @@ const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData})
             try {
                 const resp = await axiosApi.post('piquera/cliente/', formData);
                 if (resp.status === 201){
-                    toast.success('CLiente Registrado Sactifactoriamente!', {position: 'top-right',});
+                    toast.success('Cliente Registrado Sactifactoriamente!', {position: 'top-right',});
                     form.setFieldsValue(initialsFormData)
                     setIsModalVisible(false)
                     getAllClienteData()
@@ -46,7 +46,7 @@ const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData})
             try {
                 const resp = await axiosApi.put(`piquera/cliente/${editItem.id}/`, formData);
                 if (resp.status === 200){
-                    toast.success('CLiente Editado Sactifactoriamente!', {position: 'top-right',});
+                    toast.success('Cliente Editado Sactifactoriamente!', {position: 'top-right',});
                     form.setFieldsValue(initialsFormData)
                     setIsModalVisible(false)
                 }
@@ -78,7 +78,7 @@ const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData})
                 <CustomCheckBox
                     text={'Tiene Contrato Permanente?'}
                     name={'contPer'}
-                    defaultValue={editItem.contPer !== 'No'}
+                    defaultValue={editItem?.contPer !== 'No'}
                 />
             </Col>
         </Row>
