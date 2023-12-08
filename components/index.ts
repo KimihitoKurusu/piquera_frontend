@@ -8,6 +8,8 @@ import CustomConfirmModal from "@/components/base/CustomConfirmModal/CustomConfi
 import ClienteForm from "./ClienteForm/ClienteForm"
 import MarcaForm from "./MarcaForm/MarcaForm"
 import CustomCheckBox from "./base/CustomCheckBox/CustomCheckBox"
+import CustomTitle from "@/components/base/CustomTitle/CustomTitle";
+import CustomText from "@/components/base/CustomText/CustomText";
 
 export {
     CustomSider,
@@ -19,5 +21,7 @@ export {
     CustomConfirmModal,
     ClienteForm,
     MarcaForm,
-    CustomCheckBox
+    CustomCheckBox,
+    CustomTitle,
+    CustomText,
 }

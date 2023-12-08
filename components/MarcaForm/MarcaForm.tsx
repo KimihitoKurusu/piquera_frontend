@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import {Button, Col, Form, Row, Typography} from 'antd';
 import {CustomInputDecimal, CustomInputNumber, CustomTextInput} from "@/components";
-import toast, { Toaster } from 'react-hot-toast';
-import axiosApi from "@/config/axios";
-import {fontMono} from "@/config/fonts";
-import { log } from 'console';
+import toast from 'react-hot-toast';
+import {insertMarcaDataAction, updateMarcaDataAction} from "@/redux/marca/actions";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/store/store";
+import * as reducers from "@/redux/marca/slice";
 
 const {Title} = Typography;
 
@@ -13,7 +14,9 @@ const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
 }
 
-const MarcaForm: React.FC = ({setIsModalVisible, editItem, getAllMarcaData}) => {
+const MarcaForm: React.FC = ({setIsModalVisible, editItem}) => {
+    const dispatch = useDispatch()
+    const { success, error } = useSelector((state: RootState) => state.marca)
     const [form] = Form.useForm()
     const initialsFormData = {
         ['nombre']: editItem?.nombre || '',
@@ -22,41 +25,28 @@ const MarcaForm: React.FC = ({setIsModalVisible, editItem, getAllMarcaData}) => 
     }
     useEffect(() => {
         form.setFieldsValue(initialsFormData)
-    }, [])
+        if (success){
+            toast.success('Marca Modificada Sactifactoriamente!', {position: 'top-right',});
+        }
+        if(error){
+            toast.error('Upss, algo ha fallado!', {position: 'top-right',});
+        }
+
+    }, [dispatch, success, error])
 
     const onFinish = async (values: any) => {
         const formData = {
             nombre: values.nombre,
-            tiempo_km: values.tiempoKm,  // Asegúrate de que la propiedad sea tiempoKm
-            precio_km: values.precioKm  // Asegúrate de que la propiedad sea precioKm
+            tiempo_km: values.tiempoKm,
+            precio_km: values.precioKm
         };
-        if (!editItem){
-            try {
-                const resp = await axiosApi.post('piquera/marca/', formData);
-                if (resp.status === 201){
-                    toast.success('Marca Creada Sactifactoriamente!', {position: 'top-right',});
-                    form.setFieldsValue(initialsFormData)
-                    setIsModalVisible(false)
-                }
-            } catch (error) {
-                console.error('Error:', error.response.data);
-                toast.error('Upss, algo ha fallado',{position: 'top-right',});
-            }
-        }else {
-            try {
-                const resp = await axiosApi.put(`piquera/marca/${editItem.id}/`, formData);
-                if (resp.status === 200){
-                    toast.success('Marca Modificada Sactifactoriamente!', {position: 'top-right',});
-                    form.setFieldsValue(initialsFormData)
-                    setIsModalVisible(false)
-                }
-                console.log('Success:', values, resp);
-            } catch (error) {
-                console.error('Error:', error.response.data);
-                toast.error('Upss, algo ha fallado!',{position: 'top-right',});
-            }
+        if (editItem) {
+            dispatch(updateMarcaDataAction(editItem.id, formData))
+            setIsModalVisible(false)
+            return
         }
-        getAllMarcaData()
+        dispatch(insertMarcaDataAction(formData))
+        setIsModalVisible(false)
     };
     return <Form
         name="basic"

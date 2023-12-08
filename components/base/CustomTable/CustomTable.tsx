@@ -22,6 +22,10 @@ import {ExclamationCircleFilled} from "@ant-design/icons";
 import {Modal} from 'antd';
 import axiosApi from "@/config/axios";
 import toast from "react-hot-toast";
+import {useDispatch, useSelector} from "react-redux";
+import {resetMarcaDataError} from "@/redux/marca/slice";
+import {getAllMarcaData} from "@/redux/marca/actions";
+import {RootState} from "@/store/store";
 
 const {confirm} = Modal;
 
@@ -38,7 +42,18 @@ interface CustomTableProps {
 }
 
 const CustomTable: React.FC<CustomTableProps> = (props) => {
-	const {rows, columns, itemsPerPage = 10, setIsModalVisible, setModalTitle, setEditItem, getAllData, type} = props
+	const dispatch = useDispatch()
+	const { data: marcaData} = useSelector((state: RootState) => state.marca)
+	const {
+		rows,
+		columns,
+		itemsPerPage = 10,
+		setIsModalVisible,
+		setModalTitle,
+		setEditItem,
+		type,
+		getAllData = () => {}
+	} = props
 	const [page, setPage] = useState(1)
 	const [filterValue, setFilterValue] = React.useState("")
 	const [rowsPerPage] = React.useState(10)
@@ -53,6 +68,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 				axiosApi.delete(`/piquera/${type}/${id}/`).then((resp) => {
 					if (resp.status === 204) {
 						toast.success('Elemento Eliminado Sactifactoriamente!', {position: 'top-right',})
+						dispatch(getAllMarcaData())
 						getAllData()
 					}
 				}).catch((error)=>{
@@ -70,6 +86,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 
 	const filteredItems = React.useMemo(() => {
 		let filtered = [...(rows || [])]
+
 		if (hasSearchFilter) {
 			filtered = filtered.filter(
 				(item) =>{
@@ -77,6 +94,24 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 						item.nombre.toLowerCase().includes(filterValue.toLowerCase())
 				}
 			)
+		}
+		const hasContPer = filtered.some((item) => typeof item.contPer !== 'undefined')
+		const hasMarcaId = filtered.some((item) => typeof item.marca_id !== 'undefined')
+		if(hasMarcaId){
+			filtered = filtered.map((item) => {
+				if (typeof item.marca_id !== 'undefined') {
+					return { ...item, marca_id: marcaData.find(({id}) => id === item.marca_id)?.nombre};
+				}
+				return item;
+			});
+		}
+		if(hasContPer){
+			filtered = filtered.map((item) => {
+				if (typeof item.contPer !== 'undefined') {
+					return { ...item, contPer: item.contPer ? 'Sí' : 'No' };
+				}
+				return item;
+			});
 		}
 		return filtered
 	}, [rows, filterValue, statusFilter])
@@ -137,7 +172,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 								onClick={() => {
 									setEditItem(null)
 									setIsModalVisible(true)
-									getAllData()
+									dispatch(resetMarcaDataError())
 								}}
 								endContent={<PlusIcon/>}>
 							Insertar
@@ -218,6 +253,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 														setModalTitle('Editar')
 														setIsModalVisible(true)
 														setEditItem(item)
+														dispatch(resetMarcaDataError())
 													}}
 													className="text-lg text-default-400 cursor-pointer active:opacity-50">
 													<EditIcon/>

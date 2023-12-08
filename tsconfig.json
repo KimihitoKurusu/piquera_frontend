@@ -23,6 +23,7 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/base/CustomCheckBox/CustomCheckBox.jsx", "components/base/CustomCheckBox/CheckIcon.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts",
+    "components/base/CustomCheckBox/CustomCheckBox", "components/base/CustomCheckBox/CheckIcon.jsx"],
   "exclude": ["node_modules"]
 }

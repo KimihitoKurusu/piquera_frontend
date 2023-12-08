@@ -24,11 +24,12 @@ const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData})
     }, [])
 
     const onFinish = async (values: any) => {
+        values.contPer = !(values.contPer !== 'No')
         const formData = {
             nombre: values.nombre,
-            tiempo_km: values.tiempoKm,  // Asegúrate de que la propiedad sea tiempoKm
-            precio_km: values.precioKm  // Asegúrate de que la propiedad sea precioKm
+            contPer: values.contPer,
         };
+        console.log('formData', formData, editItem)
         if (!editItem){
             try {
                 const resp = await axiosApi.post('piquera/cliente/', formData);
@@ -36,6 +37,7 @@ const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData})
                     toast.success('CLiente Registrado Sactifactoriamente!', {position: 'top-right',});
                     form.setFieldsValue(initialsFormData)
                     setIsModalVisible(false)
+                    getAllClienteData()
                 }
             } catch (error) {
                 console.error('Error:', error.response.data);
@@ -76,8 +78,11 @@ const ClienteForm: React.FC = ({setIsModalVisible, editItem, getAllClienteData})
                     placeholder={'Nombre del Cliente'}
                     required
                 />
-                <Title level={5}>Tiene Contrato Permanente?</Title>
-                <CustomCheckBox />
+                <CustomCheckBox
+                    text={'Tiene Contrato Permanente?'}
+                    name={'contPer'}
+                    defaultValue={editItem.contPer !== 'No'}
+                />
             </Col>
         </Row>
         <Row>

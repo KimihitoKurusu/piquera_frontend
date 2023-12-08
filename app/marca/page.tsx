@@ -1,28 +1,27 @@
 "use client"
 import {CustomTable, MarcaForm} from "@/components/"
 import React, {useEffect, useState} from "react"
-import axiosApi from '@/config/axios'
+import { useSelector, useDispatch } from 'react-redux'
 import {marcaColumns} from "@/feature";
 import {Modal} from "antd";
 import {Toaster} from "react-hot-toast";
+import {getAllMarcaData} from "@/redux/marca/actions";
+import {RootState} from "@/store/store";
 
 export default function MarcaPage() {
-    const [marcaData, setMarcaData] = useState(null)
+    const dispatch = useDispatch()
+    const { data: marcaData, isLoading, error} = useSelector((state: RootState) => state.marca)
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [modalTitle, setModalTitle] = useState('Insertar')
     const [editItem, setEditItem] = useState(null);
 
-    const getAllMarcaData = () => {
-        axiosApi.get('piquera/marca/').then(({data}) => {
-            setMarcaData(data)
-        })
-    }
-
     useEffect(() => {
-        if (!marcaData) {
-            getAllMarcaData()
+        console.log('Marca', marcaData)
+        if (marcaData.length === 0 && !isLoading){
+            dispatch(getAllMarcaData())
         }
-    })
+
+    }, [dispatch, marcaData, isLoading])
 
 	return (
         <>
@@ -41,7 +40,6 @@ export default function MarcaPage() {
                 setIsModalVisible={setIsModalVisible}
                 setModalTitle={setModalTitle}
                 setEditItem={setEditItem}
-                getAllData={getAllMarcaData}
                 type='marca'
             />
             <Modal
@@ -53,7 +51,7 @@ export default function MarcaPage() {
                 footer={null}
                 destroyOnClose
             >
-               <MarcaForm setIsModalVisible={setIsModalVisible} editItem={editItem} getAllMarcaData={getAllMarcaData}/>
+               <MarcaForm setIsModalVisible={setIsModalVisible} editItem={editItem}/>
             </Modal>
         </>
     )

@@ -5,8 +5,13 @@ import axiosApi from '@/config/axios'
 import {taxiColumns} from "@/feature";
 import {Modal} from "antd";
 import {Toaster} from "react-hot-toast";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/store/store";
+import {getAllMarcaData} from "@/redux/marca/actions";
 
 export default function TaxiPage() {
+    const dispatch = useDispatch()
+    const { data: marcaData, isLoading} = useSelector((state: RootState) => state.marca)
     const [taxiData, setTaxiData] = useState(null)
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [modalTitle, setModalTitle] = useState('Insertar')
@@ -19,6 +24,15 @@ export default function TaxiPage() {
     }
 
     useEffect(() => {
+        console.log('Marca', marcaData)
+        if (marcaData.length === 0 && !isLoading){
+            dispatch(getAllMarcaData())
+        }
+
+    }, [dispatch, marcaData, isLoading])
+
+    useEffect(() => {
+        console.log(taxiData)
         if (!taxiData) {
             getAllTaxiData()
         }

@@ -1,6 +1,6 @@
 const taxiColumns = [
     {
-        key: "marca",
+        key: "marca_id",
         label: "Marca",
     },
     {
