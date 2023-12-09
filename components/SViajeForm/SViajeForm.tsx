@@ -60,8 +60,6 @@ const SViajeForm: React.FC = ({setIsModalVisible, editItem, getAllSViajeData}) =
         ['distancia']: editItem?.distancia || '',
         ['completado']: editItem?.completado || '',
     }
-    console.log('editItem', editItem)
-    console.log('initialsFormData', initialsFormData)
     useEffect(() => {
         if (!allApiData) {
             fetchData().then((result) => {
@@ -72,7 +70,7 @@ const SViajeForm: React.FC = ({setIsModalVisible, editItem, getAllSViajeData}) =
     }, [allApiData])
 
     useEffect(() => {
-        if (marcaData.length === 0 && !isLoading) {
+        if (marcaData?.length === 0 && !isLoading) {
             dispatch(getAllMarcaData())
         }
 

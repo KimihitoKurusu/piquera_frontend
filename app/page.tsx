@@ -46,14 +46,12 @@ export default function Home() {
 				>
 					Solicitud de Viaje
 				</Link>
-			</div>
-
-			<div className="mt-8">
-				<Snippet hideSymbol hideCopyButton variant="flat">
-					<span>
-						Get started by editing <Code color="primary">app/page.tsx</Code>
-					</span>
-				</Snippet>
+				<Link
+					href='./factura'
+					className={buttonStyles({ color: "primary", radius: "full", variant: "shadow" })}
+				>
+					Factura
+				</Link>
 			</div>
 		</section>
 	);

@@ -12,6 +12,9 @@ import CustomSelect from "@/components/base/CustomSelect/CustomSelect";
 // Formularios específicos
 import ClienteForm from "./ClienteForm/ClienteForm";
 import MarcaForm from "./MarcaForm/MarcaForm";
+import TaxiForm from "./TaxiForm/TaxiForm";
+import SViajeForm from "./SViajeForm/SViajeForm";
+import FacturaForm from "./FacturaForm/FacturaForm";
 
 export {
     // Componentes base
@@ -28,4 +31,8 @@ export {
     // Formularios específicos
     ClienteForm,
     MarcaForm,
+    TaxiForm,
+    SViajeForm,
+    FacturaForm
 };
+

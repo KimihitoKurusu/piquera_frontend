@@ -26,6 +26,10 @@ export const siteConfig = {
 			href: "/sviaje",
 		},
 		{
+			label: "Factura",
+			href: "/factura",
+		},
+		{
 			label: "About",
 			href: "/about",
 		},
@@ -50,6 +54,10 @@ export const siteConfig = {
 		{
 			label: "Solicitud de Viaje",
 			href: "/sviaje",
+		},
+		{
+			label: "Factura",
+			href: "/factura",
 		},
 		{
 			label: "About",

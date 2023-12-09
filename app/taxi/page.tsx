@@ -25,7 +25,7 @@ export default function TaxiPage() {
     }
 
     useEffect(() => {
-        if (marcaData.length === 0 && !isLoading){
+        if (marcaData?.length === 0 && !isLoading){
             dispatch(getAllMarcaData())
         }
 
