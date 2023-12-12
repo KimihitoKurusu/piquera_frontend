@@ -37,6 +37,8 @@ export default function FacturaPage() {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [allApiData, setAllApiData] = useState(null);
 	const [factura, setFactura] = useState([]);
+	const [totalPrice, setTotalPrice] = useState(0);
+	const [clientName, setClientName] = useState('');
 
 	useEffect(() => {
 		if (!allApiData) {
@@ -47,57 +49,55 @@ export default function FacturaPage() {
 	}, [allApiData]);
 
 	const calculateCulminacionDate = (sViaje) => {
-		const marcaId = allApiData?.taxi.find(
-			(taxi) => taxi.id === sViaje?.taxi
-		).marca_id;
-		const tiempoKM = allApiData?.marca.find(
-			({ id }) => marcaId === id
-		).tiempo_km;
-		return moment(sViaje?.recogida_date).add(
-			sViaje?.distancia * tiempoKM,
-			"seconds"
-		);
+		const marcaId = allApiData?.taxi.find((taxi) => taxi.id === sViaje?.taxi)?.marca_id;
+		const tiempoKM = allApiData?.marca.find(({ id }) => marcaId === id)?.tiempo_km;
+		return moment(sViaje?.recogida_date).add(sViaje?.distancia * tiempoKM, "seconds");
+	};
+	const calculateTotal = (factura) => {
+		const totalPrice = factura.reduce((accumulator, currentValue) => {
+			const precio = parseFloat(currentValue.precio); // Convierte el precio a un número
+			return accumulator + (isNaN(precio) ? 0 : precio); // Maneja el caso en que el precio no sea un número
+		}, 0);
+
+		console.log(totalPrice);
+		setTotalPrice(totalPrice);
 	};
 
 	const calculatePrecio = (sViaje) => {
-		const marcaId = allApiData?.taxi.find(
-			(taxi) => taxi.id === sViaje?.taxi
-		).marca_id;
-		const precioKM = allApiData?.marca.find(
-			({ id }) => marcaId === id
-		).precio_km;
+		const marcaId = allApiData?.taxi.find((taxi) => taxi.id === sViaje?.taxi)?.marca_id;
+		const precioKM = allApiData?.marca.find(({ id }) => marcaId === id)?.precio_km;
 		return sViaje?.distancia * precioKM;
 	};
 
-	const facturaData = (cliente: string, date: Moment) => {
+	const facturaData = ({ cliente, recogida_date }) => {
 		if (!!cliente) {
-			allApiData?.sviaje.map((sViaje) => {
-				const factura = {
+			const facturaList = allApiData?.sviaje
+				.filter((sViaje) =>
+					sViaje?.completado &&
+					sViaje.cliente === Number(cliente.split(';')[0]) &&
+					moment(sViaje?.recogida_date).month() === moment(recogida_date).month()
+				)
+				.map((sViaje) => ({
 					taxi: sViaje?.taxi,
 					distancia: sViaje?.distancia,
 					destino: sViaje?.destino,
-					recogida_date: sViaje?.recogida_date,
-					culminacion_date: calculateCulminacionDate(sViaje),
+					recogida_date: moment(sViaje?.recogida_date).format('YYYY-MM-DD HH:mm:ss'), // Formatear la fecha aquí
+					culminacion_date: moment(calculateCulminacionDate(sViaje)).format('YYYY-MM-DD HH:mm:ss'), // Formatear la fecha aquí
 					cant_personas: sViaje?.cant_personas,
 					precio: calculatePrecio(sViaje),
-				};
-				if (
-					sViaje?.completado &&
-					sViaje.cliente === Number(cliente?.split(';')[0]) &&
-					moment(sViaje?.recogida_date).month() ===
-						moment(date).month()
-				) {
-					return factura;
-				}
-			});
+				}));
+			setFactura(facturaList);
+			calculateTotal(facturaList)
+			return facturaList;
 		}
+		setFactura([]);
 		return [];
 	};
 
 	const [form] = Form.useForm();
 
-	const onFinish = (values: any) => {
-		console.log('values', values)
+	const onFinish = (values) => {
+		facturaData(values);
 	};
 
 	return (
@@ -130,10 +130,10 @@ export default function FacturaPage() {
 							})}
 						</CustomSelect>
 						<Title level={5}>Mes de Factura: </Title>
-						<Form.Item name={"recogida_date"} required>
+						<Form.Item name="recogida_date" required>
 							<DatePicker
 								picker={"month"}
-								defaultValue={moment("MM-YYYY")}
+								// defaultValue={moment("MM-YYYY")}
 							/>
 						</Form.Item>
 						<Divider />
@@ -157,13 +157,15 @@ export default function FacturaPage() {
 						}}
 					/>
 					<CustomTable
-						rows={facturaData(4)}
+						rows={factura}
 						columns={facturaColumns}
 						type="factura"
 						filterKey="destino"
 						setIsModalVisible={setIsModalVisible}
 						setModalTitle={setModalTitle}
 						setEditItem={setEditItem}
+						totalPrice={totalPrice}
+						clientName={clientName}
 					/>
 				</div>
 			</Flex>

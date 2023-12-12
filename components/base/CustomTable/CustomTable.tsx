@@ -46,6 +46,7 @@ interface CustomTableProps {
 	getAllData?: () => void;
 	type: string;
 	filterKey: string | string[];
+	totalPrice: any
 }
 
 const stateValues = {
@@ -100,6 +101,8 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 		type,
 		filterKey,
 		getAllData = () => {},
+		totalPrice,
+		clientName,
 		...otherProps
 	} = props;
 	const [page, setPage] = useState(1);
@@ -291,7 +294,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 			if (type.split(" ").length === 2) {
 				return (
 					<CustomTitle
-						label={type.split(" ")[1]}
+						label={type.split(clientName)[1]}
 						level={2}></CustomTitle>
 				);
 			} else {
@@ -347,7 +350,7 @@ const CustomTable: React.FC<CustomTableProps> = (props) => {
 				return (
 					<CustomTitle
 						label={
-							"Total: 0 CUP"
+							`Total: ${totalPrice} CUP`
 						}
 						level={2}></CustomTitle>
 				);
